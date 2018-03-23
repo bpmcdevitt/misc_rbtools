@@ -7,5 +7,8 @@ search_words = ARGV[0]
 
 page = Wikipedia.find(search_words)
 
-puts page.title+"\n"
-puts page.text+"\n"
+puts page.title
+puts '--------------------------------------------------------------'
+puts page.fullurl
+puts '--------------------------------------------------------------'
+puts page.text
