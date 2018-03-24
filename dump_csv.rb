@@ -12,18 +12,18 @@ parser = OptionParser.new do |parser|
 	parser.on("-c", "--column int", "The column number to dump.") do |column|
 		options[:column] = column
 	end
-	parser.on("-f", "--filename NAME", "The CSV filename to use.") do |filename|
+	parser.on("-f", "--filename FILE", "The CSV filename to use.") do |filename|
 		options[:filename] = filename
 	end
+  options[:all] = false
   parser.on("-a", "--all", "Dump all columns") do
-    options[:all] = truejj
+    options[:all] = true
   end
 end
 
 parser.parse!
 
-#if options[:column].is_a?
 col_data = []
-CSV.foreach(options[:filename]) {|col| col_data << col[options[:column].to_i]}
+
+CSV.foreach (options[:filename]) {|col| col_data << col[options[:column].to_i]} if (options[:column] and options[:filename])
 puts col_data
-#end
