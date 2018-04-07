@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 # CVE class
 
-# using this code as example to start:
-# https://github.com/fidius/cvedb/blob/master/lib/tasks/parse_cves.rake
+# the end goal of this is to just be something that i can use to lookup cve quickly from the command line. yes i know that these tools already exist, but what i'm trying to learn more about ruby so why not?
 
 require 'net/http'
 
@@ -20,8 +19,8 @@ class CVE
     2014 2015 2016 2017 2018]
   end
 
-    def xml_feed
-      endpoint = 'cve/2.0/'
-      uri = URI(base_uri)
-    end
+  def xml_feed
+    endpoint = 'cve/2.0/'
+    uri = URI(base_uri)
+  end
 end
