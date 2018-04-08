@@ -11,16 +11,26 @@ class CVE
     @base_uri ||= 'https://nvd.nist.gov/feeds/'
   end
 
-  def cve_years
+  def available_years
     # i know this is long, ill fix it later to generate the numbers or something
-    @cve_years ||= %w[
+    @year ||= %w[
     2002 2003 2004 2005 2006 2007
     2008 2009 2010 2011 2012 2013
     2014 2015 2016 2017 2018]
   end
 
-  def xml_feed
-    endpoint = 'cve/2.0/'
-    uri = URI(base_uri)
+  def xml_feed_url
+    endpoint = 'xml/cve/2.0/'
+    url = self.base_uri + endpoint
+    uri = URI(url)
   end
+
+  def xml_file(year)
+    xml_file = "nvdcve-2.0-#{year}.xml.gz"
+  end
+
 end
+
+cve = CVE.new
+request_url = "#{cve.xml_feed_url}#{cve.xml_file(2003)}"
+`wget #{request_url}`
