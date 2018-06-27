@@ -10,4 +10,4 @@ uri = URI(url)
 response = Net::HTTP.get(uri)
 json_data = JSON.parse(response)
 
-puts json_data['response']['player_count']
+puts "time: #{Time.now}\nplayers: #{json_data['response']['player_count']}"
