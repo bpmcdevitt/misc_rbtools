@@ -46,7 +46,7 @@ class PasteBinner
                                           }).execute do |response, request, result|
       case response.code
       when 400
-        [ :errpr, response.to_str ]
+        [ :error, response.to_str ]
       when 200
         [ :success, response.to_str]
       else
