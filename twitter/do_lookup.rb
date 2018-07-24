@@ -11,9 +11,9 @@ auth_secret = ACCESS_TOKEN_SECRET
 
 tw = TwitterFollowerLookup.new(username, consumer_key, consumer_secret, auth_token, auth_secret)
 
-follower_usernames = tw.follower_names
+follower_usernames = tw.get_follower_usernames
 
-follower_names.each do |username|
-  puts "#{username}.name"
+follower_usernames.each do |username|
+  puts username.name
 end
 
