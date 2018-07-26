@@ -5,6 +5,14 @@ require './twitter_follower_lookup.rb'
 
 # set the username to the arg we pass the script
 username = ARGV[0]
+
+# make sure we are passing in a username
+if ARGV.empty? 
+  puts 'please provide a username to perform the lookup on'
+  exit
+end
+
+# grab these however you like, they can be from an environment var or a 'secret' file as i have done.
 consumer_key = CONSUMER_KEY
 consumer_secret = CONSUMER_SECRET
 auth_token = ACCESS_TOKEN
