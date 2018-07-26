@@ -4,27 +4,23 @@ require 'twitter'
 require 'pry'
 
 class TwitterFollowerLookup
-  def initialize(username, consumer_key, consumer_secret, auth_token, auth_secret)
+  def initialize(username, consumer_key, consumer_secret, access_token, access_token_secret)
     @username = username
     @consumer_key = consumer_key
     @consumer_secret = consumer_secret
-    @auth_token = auth_token
-    @auth_secret = auth_secret
-  end
-
-  def config_client
-    client = Twitter::REST::Client.new do |config|
-      config.consumer_key    = @consumer_key
-      config.consumer_secret = @consumer_secret
-      config.access_token = @access_token
-      config.access_token_secret = @access_token_secret
+    @access_token = access_token
+    @access_token_secret = access_token_secret
+    @client = Twitter::REST::Client.new do |config|
+      config.consumer_key = consumer_key
+      config.consumer_secret = consumer_secret
+      config.access_token = access_token
+      config.access_token_secret = access_token_secret
     end
   end
 
   # handles the main api call, and also handles rate limiting, just let it sleep for 15 min its ok!
   def get_follower_usernames
-    client = config_client
-    get_follower_usernames = client.followers(@username)
+    get_follower_usernames = @client.followers(@username)
     begin
       get_follower_usernames.to_a
     rescue Twitter::Error::TooManyRequests => error
@@ -37,7 +33,9 @@ class TwitterFollowerLookup
 
   # dont think this one works, havent tested yet.
   def follower_names
-    follower_names = get_follower_usernames.each(&:name)
+    follower_names = get_follower_usernames.map do |username|
+      username.name
+    end
   end
 
   def save_to_file(filename, data_to_write)
