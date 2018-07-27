@@ -74,21 +74,22 @@ class PasteBinner
 
   # params is optional for now. to query specific language ?lang=ruby as an example
   def scrape_public_pastes(params = nil)
-    resposne = RestClient::Request.new({
+    response = RestClient::Request.execute(
       method: :get,
-      url: @scraping_api_url + ENDPOINTS[:api_scraping],
-                                       }).execute do |response, request, result|
-      case response.code
-      when 400
-        [ :error, response.to_str ]
-      when 200
-        [ :success, response.to_str ]
-      else
-        fail "Invalid response #{response.to_str} received."
-      end
+      url: @scraping_api_url + ENDPOINTS[:api_scraping])
+  end
+
+  # this will be the main way to execute any of these methods. this has the exception handling taken care of.
+  def execute_query(api_call)
+    begin
+      api_call
+    rescue RestClient::ExceptionWithResponse => e
+      puts e.message
     end
   end
+
 end
+
 
 ######################## TESTING ####################################################
 #####################################################################################
@@ -108,4 +109,6 @@ pb =  PasteBinner.new(api_dev_key)
 #params = { "api_dev_key": api_dev_key, "api_option": "paste", "api_paste_code": paste_data }
 
 #puts pb.create_paste(params)
-puts pb.scrape_public_pastes
+
+api_call = pb.scrape_public_pastes
+puts pb.execute_query(api_call)
