@@ -71,6 +71,23 @@ class PasteBinner
       end
     end
   end
+
+  # params is optional for now. to query specific language ?lang=ruby as an example
+  def scrape_public_pastes(params = nil)
+    resposne = RestClient::Request.new({
+      method: :get,
+      url: @scraping_api_url + ENDPOINTS[:api_scraping],
+                                       }).execute do |response, request, result|
+      case response.code
+      when 400
+        [ :error, response.to_str ]
+      when 200
+        [ :success, response.to_str ]
+      else
+        fail "Invalid response #{response.to_str} received."
+      end
+    end
+  end
 end
 
 ######################## TESTING ####################################################
@@ -83,12 +100,12 @@ api_dev_key = ENV['pastebin_api_key']
 
 # setup our object and grab a session key
 pb =  PasteBinner.new(api_dev_key)
-api_user_key = pb.get_api_user_key(ENV['pastebin_username'], ENV['pastebin_password'])
+#api_user_key = pb.get_api_user_key(ENV['pastebin_username'], ENV['pastebin_password'])
 
 # here is some paste content
-paste_data = 'this is a test paste two two two.'
+#paste_data = 'this is a test paste two two two.'
 # prepare our paste params
-params = { "api_dev_key": api_dev_key, "api_option": "paste", "api_paste_code": paste_data }
+#params = { "api_dev_key": api_dev_key, "api_option": "paste", "api_paste_code": paste_data }
 
-puts pb.create_paste(params)
-
+#puts pb.create_paste(params)
+puts pb.scrape_public_pastes
